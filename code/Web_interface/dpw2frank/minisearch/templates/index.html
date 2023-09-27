@@ -1,0 +1,41 @@
+{% load static %}
+<!doctype html> 
+<html> 
+	<body background="{% static "img/background.jpg"%}">
+<nav class="navbar navbar-light bg-light"> 
+  <center> 
+  <img src="{% static "img/booksearch.jpg" %}" width="450" height="250"">
+  <h3><font color="white">Children Books Search Engine</font></h3>
+  <form class="form-inline"> 
+    <input  
+    class="form-control mr-sm-2"  
+    type="search" placeholder="Keyword"  
+    aria-label="Keyword" 
+    name = 'keyword' 
+    value = ""> 
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button> 
+  </form> 
+  </center> 
+</nav> 
+{% if results %} 
+      <div class="txtCentrado margenSup20 grisDC">
+	      <h3><font color="white">We found {{ count }} result{{ count|pluralize }} for your search "<i>{{ search_term }}</i>", showing top hits according to TF-IDF score: </font></h3>
+           </div>
+               <div class="search results">
+                   {% for mytuple in results %}
+         <div class="images">
+		 <img src="{% static "img/score_icon.png"%}"hspace=5"><font color="white">{{ mytuple.0 }}</font>
+		 <img src="{% static "img/book_icon.png"%}"hspace="5"><font color="white">{{ mytuple.1 }}</font>
+       <img src="{% static "img/linenum_icon.png" %}"hspace="5"><a href='http://172.18.0.3:9864/webhdfs/v1/user/root/ChildrenBooks/{{ mytuple.1 }}?op=OPEN&namenoderpcaddress=namenode:9000&offset=0'>Download</a>
+       <!-- <img src="{% static "img/text_icon.png"%}"hspace="5">{{ mytuple.3 }}-->
+      </div>
+      <p></p>
+       {% endfor %}
+    </div>
+{%elif not search_term %}
+<p><font color="white">Insert your search here.</font></p>
+{%elif not results %}
+<p><font color="white">No books found now. Please input keywords such as "Little Red Riding-Hood" or "ugly duckling".</font></p>
+{% endif %}
+</body>
+</html>
